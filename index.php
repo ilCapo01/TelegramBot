@@ -37,7 +37,7 @@ try {
 
   if ($tg->setCommand('/start'))
   {
-		// TODO: The user doesnt receive the image.
+		// TODO: Bug; the user doesnt receive the image.
 		$tg->sendPhoto($chat_id, 'D4jmpIlU0AAhMY9.png');
 
 		$welcome = 'Hello, ' . $userName . '.';
