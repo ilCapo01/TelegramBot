@@ -1,54 +1,58 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'request.php') die;
 
+define('BASE_URL', 'https://api.telegram.org/bot');
+
+// https://core.telegram.org/bots/api/
 class Request {
 
   // https://core.telegram.org/bots/api/#replykeyboardmarkup
   function sendKeyboardMarkup($authToken, $userID, $msg, $options = array()) {
-    $url = 'https://api.telegram.org/bot' . $authToken . '/sendmessage';
+    $url = BASE_URL . $authToken . '/sendMessage';
 
     $keyboard = '';
     $len = count($options);
     for ($i=0; $i<$len; $i++)
     {
-  	  if ($i < $len-1) {
-  		  $keyboard .= '["'.$options[$i].'"],';
-  	  }else{
-  		  $keyboard .= '["'.$options[$i].'"]';
-  	  }
+      if ($i < $len-1) {
+        $keyboard .= '["'.$options[$i].'"],';
+      }else{
+        $keyboard .= '["'.$options[$i].'"]';
+      }
     }
 
     return $this->requests($url, 'POST', array(
       'chat_id' => $userID, 'text' => $msg,
-	  'reply_markup' => '{"keyboard":['.$keyboard.']}'
+      'reply_markup' => '{"keyboard":['.$keyboard.']}'
     ), array(
-		'Content-Type: application/x-www-form-urlencoded'
-	));
+      'Content-Type: application/x-www-form-urlencoded'
+    ));
   }
 
   // https://core.telegram.org/bots/api/#sendmessage
   function sendMessage($authToken, $userID, $msg) {
-    $url = 'https://api.telegram.org/bot' . $authToken . '/sendmessage';
+    $url = BASE_URL . $authToken . '/sendMessage';
 
     return $this->requests($url, 'POST', array(
       'chat_id' => $userID, 'text' => $msg
     ), array(
-		'Content-Type: application/x-www-form-urlencoded'
-	));
+      'Content-Type: application/x-www-form-urlencoded'
+    ));
   }
 
+  //https://stackoverflow.com/a/32296353
   function sendPhoto($authToken, $userID, $imagePath = '') {
-	$url = 'https://api.telegram.org/bot' . $authToken . '/sendphoto';
+    $url = BASE_URL . $authToken . '/sendPhoto';
 
     return $this->requests($url, 'POST', array(
-		'chat_id'   => $userID,
-    	'photo' => $this->encodeFile(realpath($imagePath))//new CURLFile(realpath($imagePath))
-	), array(
-		'Content-Type: multipart/form-data'
-	));
+      'chat_id'   => $userID,
+      'photo' => new CURLFile(realpath($imagePath)) //$this->encodeFile($imagePath)
+    ), array(
+      'Content-Type: multipart/form-data'
+    ));
   }
 
-  function encodeFile($file) {
+  private function encodeFile($file) {
 	  $fp = fopen($file, 'rb');
 	  if ($fp === false)
 		  throw new Exception('Cannot open ' . $file . ' for reading.');
@@ -61,7 +65,7 @@ class Request {
   	$ch = curl_init();
 
   	curl_setopt($ch, CURLOPT_URL, $url . ($method == 'GET' ? '?' . http_build_query($params) : ''));
-	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
   	curl_setopt($ch, CURLOPT_POST, ($method == 'POST' ? 1 : 0));
   	if ($method == 'POST')
   		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
