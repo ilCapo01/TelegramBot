@@ -21,7 +21,7 @@ try {
 	$db = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME);
   $tg = new Telegram(AUTH_TOKEN, $db);
 
-	// Packet from Telegram user.
+	// https://core.telegram.org/bots/api/#message
   $message = $tg->getMessage();
 
   $chat_id = $message->{'chat'}->{'id'};
