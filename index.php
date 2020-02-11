@@ -32,17 +32,14 @@ try {
 
   $userName = $message->{'from'}->{'first_name'} . ' ' . $message->{'from'}->{'last_name'};
 
-  // Log the user's request timestamp.
-  $chat = $tg->db->insertUser($chat_id);
-
+	// Start command.
   if ($tg->setCommand('/start'))
   {
 		// TODO: Bug; the user doesnt receive the image.
 		$tg->sendPhoto($chat_id, 'D4jmpIlU0AAhMY9.png');
 
-		$welcome = 'Hello, ' . $userName . '.';
 		// Send the keyboard.
-	  $tg->sendKeyboardMarkup($chat_id, $welcome, array(
+	  $tg->sendKeyboardMarkup($chat_id, 'Hello, ' . $userName . '.', array(
 			'Option #1', 'Option #2', 'Option #3'
 	  ));
   }
