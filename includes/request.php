@@ -1,5 +1,5 @@
 <?php
-if (basename($_SERVER['PHP_SELF']) == 'request.php') die;
+if (basename($_SERVER['PHP_SELF']) == 'request.php') { header('HTTP/1.0 403 Forbidden'); die; }
 
 define('BASE_URL', 'https://api.telegram.org/bot');
 
@@ -40,10 +40,11 @@ class Request {
     ));
   }
 
-  //https://stackoverflow.com/a/32296353
+  //https://core.telegram.org/bots/api/#sendphoto
   function sendPhoto($authToken, $userID, $imagePath = '') {
     $url = BASE_URL . $authToken . '/sendPhoto';
 
+    // https://stackoverflow.com/a/32296353
     return $this->requests($url, 'POST', array(
       'chat_id'   => $userID,
       'photo' => new CURLFile(realpath($imagePath)) //$this->encodeFile($imagePath)

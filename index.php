@@ -1,9 +1,10 @@
 <?php
 ob_start();
-if ( !defined('ABSPATH'))
+if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');
 
 include(ABSPATH . 'includes/config.php');
+include(ABSPATH . 'includes/request.php');
 include(ABSPATH . 'includes/telegram.php');
 include(ABSPATH . 'includes/database.php');
 ob_end_flush();
@@ -29,7 +30,6 @@ try {
 	// Start command.
   if ($tg->setCommand('/start'))
   {
-
 		// TODO: Bug; the user doesnt receive the image.
 		$tg->sendPhoto($chat_id, 'D4jmpIlU0AAhMY9.png');
 

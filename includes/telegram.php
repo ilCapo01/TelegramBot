@@ -1,16 +1,10 @@
 <?php
-if (basename($_SERVER['PHP_SELF']) == 'telegram.php') die;
+if (basename($_SERVER['PHP_SELF']) == 'telegram.php') { header('HTTP/1.0 403 Forbidden'); die; }
 
-//include('database.php');
-include ABSPATH . 'request.php';
-
-// Documentation:
-// https://core.telegram.org/bots/api/
-// Exmple: YT/watch?v=gYQ0OmkVFSk
+// /watch?v=gYQ0OmkVFSk
 class Telegram {
   var $authToken;
   var $update;
-  private $base_url = 'start_bot';
   var $db;
 
   function __construct($authToken, $db) {
@@ -19,14 +13,20 @@ class Telegram {
     $this->db = $db;
   }
 
+  // https://core.telegram.org/bots/api/#message
   private function handle() {
-    if ($_SERVER['REQUEST_URI'] == $this->base_url) {
-      $json = json_decode(file_get_contents('php://input'));
-      if (!is_object($json))
-        throw new Exception('Couldn\'t read input.');
-      return $json;
+    if ($_SERVER['REQUEST_URI'] != BASE_REQUEST_URI) {
+      throw new Exception('Bad request.');
     }
-    throw new Exception('Bad request.');
+    if ($_SERVER['HTTP_HOST'] == TELEGRAM_SERVER_IP) {
+      header('HTTP/1.0 403 Forbidden');
+      throw new Exception('Unfamiliar host tried to gain access.');
+    }
+
+    $json = json_decode(file_get_contents('php://input'));
+    if (!is_object($json))
+      throw new Exception('Could not read input.');
+    return $json;
   }
 
   function requestLimiter($chat_id = 0) {

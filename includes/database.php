@@ -1,6 +1,5 @@
 <?php
-if (basename($_SERVER['PHP_SELF']) == 'database.php')
-	die;
+if (basename($_SERVER['PHP_SELF']) == 'database.php') { header('HTTP/1.0 403 Forbidden'); die; }
 
 class Database {
 	private $pdo = null;
