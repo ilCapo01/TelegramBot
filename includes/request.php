@@ -65,6 +65,9 @@ class Request {
   private function requests($url, $method = 'GET', $params = array(), $headers = array()) {
   	$ch = curl_init();
 
+    // Save bandwidth:
+    // https://stackoverflow.com/questions/5699020/php-manual-gzip-encoding#5701631
+
   	curl_setopt($ch, CURLOPT_URL, $url . ($method == 'GET' ? '?' . http_build_query($params) : ''));
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
   	curl_setopt($ch, CURLOPT_POST, ($method == 'POST' ? 1 : 0));
