@@ -25,6 +25,8 @@ try {
   $message = $tg->getMessage();
 
   $chat_id = $message->{'chat'}->{'id'};
+  $user_id = $message->{'from'}->{'id'};
+  $user_name = '@'.$message->{'from'}->{'username'};
   $text = $message->{'text'};
 
 	// Start command.
