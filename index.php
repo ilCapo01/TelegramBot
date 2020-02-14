@@ -30,9 +30,6 @@ try {
 	// Start command.
   if ($tg->setCommand('/start'))
   {
-		// TODO: Bug; the user doesnt receive the image.
-		$tg->sendPhoto($chat_id, 'D4jmpIlU0AAhMY9.png');
-
 		// Send the keyboard.
 	  $tg->sendKeyboardMarkup($chat_id, 'Hello, ' .
 		$message->{'from'}->{'first_name'} . ' ' .
