@@ -1,8 +1,8 @@
 <?php
-ob_start();
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');
 
+ob_start();
 include(ABSPATH . 'includes/config.php');
 include(ABSPATH . 'includes/request.php');
 include(ABSPATH . 'includes/telegram.php');
