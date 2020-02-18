@@ -3,12 +3,12 @@ if (basename($_SERVER['PHP_SELF']) == 'telegram.php') { header('HTTP/1.0 403 For
 
 // /watch?v=gYQ0OmkVFSk
 class Telegram {
-  var $authToken;
+  var $request = null;
   var $update;
   var $db;
 
-  function __construct($authToken, $db) {
-    $this->authToken = $authToken;
+  function __construct($request, $db) {
+    $this->request = $request;
     $this->update = $this->handle();
     $this->db = $db;
   }
@@ -21,11 +21,14 @@ class Telegram {
     if ($_SERVER['HTTP_HOST'] == TELEGRAM_SERVER_IP) {
       header('HTTP/1.0 403 Forbidden');
       throw new Exception('Unfamiliar host tried to gain access.');
+      die;
     }
 
     $json = json_decode(file_get_contents('php://input'));
-    if (!is_object($json))
+    if (!is_object($json)) {
       throw new Exception('Could not read input.');
+      die;
+    }
     return $json;
   }
 
@@ -45,28 +48,23 @@ class Telegram {
   function sendKeyboardMarkup($userID, $msg, $options = array()) {
 	if (empty($msg))
 	  throw new Exception('Text cannot remain empty.');
-    global $request;
-    $request->sendKeyboardMarkup($this->authToken, $userID, $msg, $options);
+    $request->sendKeyboardMarkup($userID, $msg, $options);
   }
 
   function sendMessage($userID, $msg) {
 	if (empty($msg))
 	  throw new Exception('Text cannot remain empty.');
-    global $request;
-    $request->sendMessage($this->authToken, $userID, $msg);
+    $request->sendMessage($userID, $msg);
   }
 
   function sendPhoto($userID, $imagePath = '') {
 	if (!file_exists($imagePath))
 		throw new Exception($imagePath . ' doesn\'t exist.');
-    global $request;
-    $request->sendPhoto($this->authToken, $userID, $imagePath);
+    $request->sendPhoto($userID, $imagePath);
   }
 
   function getMessage() {
 		return $this->update->{'message'};
 	}
 }
-
-
 ?>

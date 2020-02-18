@@ -19,7 +19,7 @@ $db = null;
 try {
 
 	$db = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-  $tg = new Telegram(AUTH_TOKEN, $db);
+  $tg = new Telegram(new Request(AUTH_TOKEN), $db);
 
 	// https://core.telegram.org/bots/api/#message
   $message = $tg->getMessage();

@@ -1,14 +1,18 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'request.php') { header('HTTP/1.0 403 Forbidden'); die; }
 
-define('BASE_URL', 'https://api.telegram.org/bot');
-
-// https://core.telegram.org/bots/api/
+//  https://core.telegram.org/bots/api/
 class Request {
+  var $baseURL = '';
+
+  function __construct($auth_token)
+  {
+    $this->baseURL = 'https://api.telegram.org/bot' . $auth_token;
+  }
 
   // https://core.telegram.org/bots/api/#replykeyboardmarkup
-  function sendKeyboardMarkup($authToken, $userID, $msg, $options = array()) {
-    $url = BASE_URL . $authToken . '/sendMessage';
+  function sendKeyboardMarkup($userID, $msg, $options = array()) {
+    $url = $this->baseURL . '/sendMessage';
 
     $keyboard = '';
     $len = count($options);
@@ -30,8 +34,8 @@ class Request {
   }
 
   // https://core.telegram.org/bots/api/#sendmessage
-  function sendMessage($authToken, $userID, $msg) {
-    $url = BASE_URL . $authToken . '/sendMessage';
+  function sendMessage($userID, $msg) {
+    $url = $this->baseURL . '/sendMessage';
 
     return $this->requests($url, 'POST', array(
       'chat_id' => $userID, 'text' => $msg
@@ -41,8 +45,8 @@ class Request {
   }
 
   //https://core.telegram.org/bots/api/#sendphoto
-  function sendPhoto($authToken, $userID, $imagePath = '') {
-    $url = BASE_URL . $authToken . '/sendPhoto';
+  function sendPhoto($userID, $imagePath = '') {
+    $url = $this->baseURL . '/sendPhoto';
 
     // https://stackoverflow.com/a/32296353
     return $this->requests($url, 'POST', array(
@@ -65,7 +69,7 @@ class Request {
   private function requests($url, $method = 'GET', $params = array(), $headers = array()) {
   	$ch = curl_init();
 
-    // Save bandwidth:
+    // Compress the traffic:
     // https://stackoverflow.com/questions/5699020/php-manual-gzip-encoding#5701631
 
   	curl_setopt($ch, CURLOPT_URL, $url . ($method == 'GET' ? '?' . http_build_query($params) : ''));
