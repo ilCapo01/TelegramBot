@@ -17,17 +17,12 @@ ini_set("error_log", ABSPATH . 'php-error.log');
 $db = null;
 
 try {
-
 	$db = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME);
   $tg = new Telegram(new Request(AUTH_TOKEN), $db);
 
-	// https://core.telegram.org/bots/api/#message
   $message = $tg->getMessage();
-
-  $chat_id = $message->{'chat'}->{'id'};
-  $user_id = $message->{'from'}->{'id'};
-  $user_name = '@'.$message->{'from'}->{'username'};
-  $text = $message->{'text'};
+	$chat_id = $tg->getChatID();
+  $text = $tg->getText();
 
 	// Start command.
   if ($tg->setCommand('/start'))

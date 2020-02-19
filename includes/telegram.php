@@ -72,6 +72,23 @@ class Telegram {
     return (!is_null($data->{'location'}) ? $loc : false); // TODO: Need to check what telegram returns in 'location'.
   }
 
+  function getChatID() {
+    return $this->getMessage()->{'chat'}->{'id'};
+  }
+
+  function getUserID() {
+    return $this->getMessage()->{'from'}->{'id'};
+  }
+
+  function getUsername() {
+    return '@'.$this->getMessage()->{'from'}->{'username'};
+  }
+
+  function getText() {
+    return $this->getText();
+  }
+
+  // https://core.telegram.org/bots/api/#message
   function getMessage() {
 		return $this->update->{'message'};
 	}
