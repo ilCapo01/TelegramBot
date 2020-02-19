@@ -26,12 +26,12 @@ class Telegram {
     }
 
     $rawData = stripslashes(file_get_contents('php://input'));
-    $json = json_decode($rawData);
-    if (!is_object($json)) {
+    $arr = json_decode($rawData);
+    if (!is_object($arr)) {
       throw new Exception('Could not read input.');
       die;
     }
-    return $json;
+    return $arr;
   }
 
   function antiSpam($chat_id = 0) {
@@ -69,7 +69,7 @@ class Telegram {
     $loc = array(
       'longitude' => $data->{'location'}->{'longitude'},
   		'latitude' => $data->{'location'}->{'latitude'});
-    return $loc;
+    return (!is_null($data->{'location'}) ? $loc : false); // TODO: Need to check what telegram returns in 'location'.
   }
 
   function getMessage() {
