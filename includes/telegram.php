@@ -18,13 +18,15 @@ class Telegram {
     if ($_SERVER['REQUEST_URI'] != BASE_REQUEST_URI) {
       throw new Exception('Bad request.');
     }
-    if ($_SERVER['HTTP_HOST'] == TELEGRAM_SERVER_IP) {
+
+    if ($_SERVER['REMOTE_ADDR'] == TELEGRAM_SERVER_IP) { // $_SERVER['HTTP_HOST']
       header('HTTP/1.0 403 Forbidden');
       throw new Exception('Unfamiliar host tried to gain access.');
       die;
     }
 
-    $json = json_decode(file_get_contents('php://input'));
+    $rawData = stripslashes(file_get_contents('php://input'));
+    $json = json_decode($rawData);
     if (!is_object($json)) {
       throw new Exception('Could not read input.');
       die;
@@ -32,8 +34,7 @@ class Telegram {
     return $json;
   }
 
-  function requestLimiter($chat_id = 0) {
-    $time = time();
+  function antiSpam($chat_id = 0) {
     // Limit each chat \ user for X commands a minute.
   }
 
@@ -61,6 +62,14 @@ class Telegram {
 	if (!file_exists($imagePath))
 		throw new Exception($imagePath . ' doesn\'t exist.');
     $request->sendPhoto($userID, $imagePath);
+  }
+
+  function getLocation() {
+    $data = $this->getMessage();
+    $loc = array(
+      'longitude' => $data->{'location'}->{'longitude'},
+  		'latitude' => $data->{'location'}->{'latitude'});
+    return $loc;
   }
 
   function getMessage() {
