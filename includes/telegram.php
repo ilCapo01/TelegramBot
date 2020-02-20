@@ -28,8 +28,8 @@ class Telegram {
     $rawData = stripslashes(file_get_contents('php://input'));
     $arr = json_decode($rawData);
     if (!is_object($arr)) {
-      throw new Exception('Could not read input.');
-      die;
+      error_log('Could not read input.');
+      return null;
     }
     return $arr;
   }

@@ -11,5 +11,6 @@ define('DB_PASS', 'YOUR_DB_PASSWORD');
 define('DB_NAME', 'YOUR_DB_NAME');
 
 define('TELEGRAM_SERVER_IP', '149.154.167.220'); // DO NOT CHANGE THIS LINE !
+define('ERROR_LOG', ABSPATH . 'php-error.log');
 
 ?>
