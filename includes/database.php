@@ -19,7 +19,8 @@ class Database {
 				(is_null($opt['host']) || empty($opt['host'])) ||
 				(is_null($opt['user']) || empty($opt['user'])) ||
 				(is_null($opt['password']) || empty($opt['password']))) {
-					throw new Exception('Cannot connect to the database');
+					error_log('Cannot connect to the database');
+					die;
 				}
 				$this->pdo = new PDO('mysql:dbname='.$opt['db'].';host='.$opt['host'], $opt['user'], $opt['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 			}else{
@@ -27,12 +28,9 @@ class Database {
 			}
 			$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 		} catch (PDOException $e) {
-			die ($e->getMessage());
+			error_log($e->getMessage());
+			die;
 		}
-	}
-
-	function close() {
-		$this->pdo = null;
 	}
 
 	function prepare($sql, $val = array()) {
@@ -41,17 +39,8 @@ class Database {
 		return $stmt;
 	}
 
-	function getTotalRows($table) {
-		$stmt = $this->prepare('SELECT COUNT(*) AS count FROM ?');
-		$stmt->execute(array($table));
-		return $stmt->fetch()['count'];
-	}
-
-	function getUserData($userid, $data) {
-			$stmt = $this->prepare('SELECT ? FROM users WHERE id=?');
-			$stmt->execute(array($data, $userid));
-			$row = $stmt->fetch();
-			return (!is_null($row) ? ($data == '*' ? $row : $row[$data]) : false);
+	function close() {
+		$this->pdo = null;
 	}
 }
 
