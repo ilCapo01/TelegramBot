@@ -38,6 +38,11 @@ class Telegram {
     // Limit each chat \ user for X commands a minute.
   }
 
+  function setWebhook($url = $_POST['webhook']) {
+    $url = htmlspecialchars(ENT_QUOTES, stripslashes(rtrim($url)));
+    $request->setWebhook($url);
+  }
+
   function setCommand($command) {
     if (!isset($this->update) || is_null($this->update))
       return false;

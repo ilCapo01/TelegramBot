@@ -57,6 +57,16 @@ class Request {
     ));
   }
 
+  function setWebhook($url) {
+    $url = $this->baseURL . '/setWebhook';
+
+    return $this->requests($url, 'POST', array(
+      'url' => $url
+    ), array(
+      'Content-Type: application/x-www-form-urlencoded'
+    ));
+  }
+
   private function encodeFile($file) {
 	  $fp = fopen($file, 'rb');
 	  if ($fp === false)
