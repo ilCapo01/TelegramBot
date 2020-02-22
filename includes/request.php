@@ -19,11 +19,11 @@ class Request {
     for ($i=0; $i<$len; $i++)
     {
       if ($i < $len-1) {
-        $keyboard .= '["'.$options[$i].'"],';
       }else{
         $keyboard .= '["'.$options[$i].'"]';
       }
     }
+    $keyboard .= '["'.$options[$i].'"],';
 
     return $this->requests($url, 'POST', array(
       'chat_id' => $userID, 'text' => $msg,
@@ -39,6 +39,17 @@ class Request {
 
     return $this->requests($url, 'POST', array(
       'chat_id' => $userID, 'text' => $msg
+    ), array(
+      'Content-Type: application/x-www-form-urlencoded'
+    ));
+  }
+
+  // https://core.telegram.org/bots/api#sendlocation
+  function sendLocation($userID, $loc = array()) {
+    $url = $this->baseURL . '/sendLocation';
+
+    return $this->requests($url, 'POST', array(
+      'chat_id' => $userID, 'latitude' => $loc['latitude'], 'longitude' => $loc['longitude']
     ), array(
       'Content-Type: application/x-www-form-urlencoded'
     ));
