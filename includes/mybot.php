@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * TG BOT API:
+ * https://core.telegram.org/bots/api
+ */
 class MyBot extends Bot {
 
   function __construct()
@@ -7,15 +11,13 @@ class MyBot extends Bot {
     parent::__construct();
   }
 
-  protected function onCommand($cmd = '')
+  function onCommand()
   {
-    $tg = $this->tg;
-
-    $chat_id = $tg->getChatID();
-    $text = $tg->getText();
+    // https://core.telegram.org/bots/api#message
+    $chat_id = $this->msg->{'chat'}->{'id'};
 
     // Start command.
-	  if ($tg->setCommand('/start'))
+	  if (parent::onCommand('/start'))
 	  {
 			// Send the keyboard.
 		  $tg->sendKeyboardMarkup($chat_id, 'Hello, ' .
@@ -23,23 +25,25 @@ class MyBot extends Bot {
 			$message->{'from'}->{'last_name'} . '.', array(
 				'Option #1', 'Option #2', 'Option #3'
 		  ));
+      return true;
 	  }
-		else if ($tg->setCommand('Option #1'))
+		else if (parent::onCommand('Option #1'))
 		{
 			$tg->sendMessage($chat_id, 'You picked Option #1');
+      return true;
 		}
-		else if ($tg->setCommand('Option #2'))
+		else if (parent::onCommand('Option #2'))
 		{
 			$tg->sendMessage($chat_id, 'You picked Option #2');
+      return true;
 		}
-		else if ($tg->setCommand('Option #3'))
+		else if (parent::onCommand('Option #3'))
 		{
 			$tg->sendMessage($chat_id, 'You picked Option #3');
+      return true;
 		}
-
-    return parent::onCommand($cmd);
+    return false;
   }
-
 }
 
  ?>

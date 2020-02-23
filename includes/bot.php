@@ -1,28 +1,27 @@
 <?php
 
 class Bot {
-  protected $tg = null;
-  protected $db = null;
+  var $tg = null;
+  var $db = null;
+
+  var $msg = null;
 
   function __construct() {
     try {
-      $db = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-      $tg = new Telegram(new Request(AUTH_TOKEN), $db);
+      $this->db = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+      $this->tg = new Telegram(new Request(AUTH_TOKEN), $this->db);
 
-      $msg = $tg->getMessage(); // The whole packet from the user.
-
-      if (!is_null($msg))
-        $this->onCommand($msg);
+      // https://core.telegram.org/bots/api#message
+      $this->msg = $this->tg->getMessage(); // The whole packet from the user.
 
     } catch (Exception $e) {
       throw $e;
     }
-    $this->db->close();
   }
 
   protected function onCommand($cmd = '')
   {
-    return false;
+    return (!is_null($this->msg) ? $this->tg->setCommand($cmd) : false);
   }
 
 }

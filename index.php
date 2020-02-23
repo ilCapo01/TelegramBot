@@ -17,11 +17,15 @@ date_default_timezone_set(TIMEZONE);
 ini_set("log_errors", 1);
 ini_set("error_log", ERROR_LOG);
 
+$bot = null;
+
 try {
 	// Your bot is initialized down here.
 	$bot = new MyBot();
+	$bot->onCommand(); // Returns boolean.
 } catch (Exception $e) {
   error_log($e->getMessage());
 }
+$bot->db->close();
 
 ?>
