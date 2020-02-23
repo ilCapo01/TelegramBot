@@ -93,7 +93,7 @@ class Telegram {
     return $this->getText();
   }
 
-  // https://core.telegram.org/bots/api/#message
+  // https://core.telegram.org/bots/api#message
   function getMessage() {
 		return $this->update->{'message'};
 	}

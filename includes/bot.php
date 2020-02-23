@@ -24,6 +24,20 @@ class Bot {
     return (!is_null($this->msg) ? $this->tg->setCommand($cmd) : false);
   }
 
+  function getTelegram()
+  {
+    return $this->tg;
+  }
+
+  function getDatabase()
+  {
+    return $this->db;
+  }
+
+  function getMessage()
+  {
+    return $this->msg;
+  }
 }
 
  ?>
