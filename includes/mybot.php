@@ -13,14 +13,20 @@ class MyBot extends Bot {
 
   function onCommand()
   {
-    parent::onCommand($this, array(
-      'hello' => 'onHelloMessage'
+    return parent::onCommand($this, array(
+      '/start' => 'onStart',
+      'example' => 'exampleCommand'
     ));
-    return false;
   }
 
-  function onHelloMessage() {
-    
+  function onStart() {
+    $userID = $this->getMessage()->{'from'}->{'id'};
+    $this->getTelegram()->sendMessage($userID, 'Hello !');
+  }
+
+  function exampleCommand() {
+    $userID = $this->getMessage()->{'from'}->{'id'};
+    $this->getTelegram()->sendMessage($userID, 'Command for example.');
   }
 }
 

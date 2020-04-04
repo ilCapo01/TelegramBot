@@ -21,10 +21,10 @@ class Bot {
 
   protected function onCommand($class, $commands = array())
   {
-    // cmd => handler
+    // command => handler
     if (!is_null($this->msg)) {
       foreach ($commands as $cmd => $handler) {
-        if ($this->tg->setCommand($cmd)) {
+        if ($this->tg->setCommand($cmd) && method_exists($class, $handler)) {
           $class->$handler();
           return true;
         }
@@ -49,4 +49,4 @@ class Bot {
   }
 }
 
- ?>
+?>
