@@ -19,9 +19,18 @@ class Bot {
     }
   }
 
-  protected function onCommand($cmd = '')
+  protected function onCommand($class, $commands = array())
   {
-    return (!is_null($this->msg) ? $this->tg->setCommand($cmd) : false);
+    // cmd => handler
+    if (!is_null($this->msg)) {
+      foreach ($commands as $cmd => $handler) {
+        if ($this->tg->setCommand($cmd)) {
+          $class->$handler();
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   function getTelegram()

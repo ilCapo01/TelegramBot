@@ -14,7 +14,7 @@ ob_end_flush();
 
 date_default_timezone_set(TIMEZONE);
 
-ini_set("log_errors", 1);
+ini_set("log_errors", 1); 
 ini_set("error_log", ERROR_LOG);
 
 $bot = null;
