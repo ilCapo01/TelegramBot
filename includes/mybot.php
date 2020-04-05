@@ -1,4 +1,5 @@
 <?php
+if (basename($_SERVER['PHP_SELF']) == 'mybot.php') { header('HTTP/1.0 403 Forbidden'); die; }
 
 /**
  * TG BOT API:
@@ -15,18 +16,16 @@ class MyBot extends Bot {
   {
     return parent::onCommand($this, array(
       '/start' => 'onStart',
-      'example' => 'exampleCommand'
+      'example' => 'onExampleCommand'
     ));
   }
 
   function onStart() {
-    $userID = $this->getMessage()->{'from'}->{'id'};
-    $this->getTelegram()->sendMessage($userID, 'Hello !');
+    $this->getTelegram()->sendMessage($this->getUserID(), 'Hello !');
   }
 
-  function exampleCommand() {
-    $userID = $this->getMessage()->{'from'}->{'id'};
-    $this->getTelegram()->sendMessage($userID, 'Command for example.');
+  function onExampleCommand() {
+    $this->getTelegram()->sendMessage($this->getUserID(), 'Command for example.');
   }
 }
 
