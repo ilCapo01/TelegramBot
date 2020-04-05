@@ -15,13 +15,14 @@ class Telegram {
 
   // https://core.telegram.org/bots/api/#message
   private function handle() {
-    if ($_SERVER['REQUEST_URI'] != BASE_REQUEST_URI) {
+    if ($_SERVER['REQUEST_URI'] != BASE_REQUEST_URI) { // $_SERVER['QUERY_STRING']
       throw new Exception('Bad request.');
+      die; 
     }
 
     if ($_SERVER['REMOTE_ADDR'] == TELEGRAM_SERVER_IP) { // $_SERVER['HTTP_HOST']
       header('HTTP/1.0 403 Forbidden');
-      throw new Exception('Unfamiliar host tried to gain access.');
+      throw new Exception('Unfamiliar client tries to access.');
       die;
     }
 
