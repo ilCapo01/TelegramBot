@@ -9,12 +9,12 @@ include(ABSPATH . 'includes/telegram.php');
 include(ABSPATH . 'includes/database.php');
 include(ABSPATH . 'includes/bot.php');
 // Your bot is loaded down here.
-include(ABSPATH . 'includes/mybot.php');
+include(ABSPATH . 'includes/src/mybot.php');
 ob_end_flush();
 
 date_default_timezone_set(TIMEZONE);
 
-ini_set("log_errors", 1); 
+ini_set("log_errors", 1);
 ini_set("error_log", ERROR_LOG);
 
 $bot = null;
