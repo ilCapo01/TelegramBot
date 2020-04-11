@@ -1,8 +1,9 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'mybot.php') { header('HTTP/1.0 403 Forbidden'); die; }
 
-// Let you include files from this folder.
-define('SRC_PATH', dirname(__FILE__) . '/');
+// ** If you want to include files from this folder:
+// SRC_PATH - defines src absolute path.
+// Use SRC_PATH to include files from src folder.
 
 
 /**

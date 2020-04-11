@@ -2,6 +2,8 @@
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');
 
+define('SRC_PATH', ABSPATH . '/includes/src/');
+
 ob_start();
 include(ABSPATH . 'includes/config.php');
 include(ABSPATH . 'includes/request.php');
